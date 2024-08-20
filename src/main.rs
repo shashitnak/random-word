@@ -4,7 +4,11 @@ use std::io;
 use std::process::exit;
 
 fn main() -> io::Result<()> {
-    let Ok(words) = fs::read_to_string("words.txt") else {
+    let path = homedir::my_home()
+        .unwrap()
+        .unwrap()
+        .join("words.txt");
+    let Ok(words) = fs::read_to_string(&path) else {
         println!("words.txt not found");
         exit(0);
     };
@@ -39,7 +43,7 @@ fn main() -> io::Result<()> {
         })
         .collect::<Vec<_>>()
         .join("\n");
-    let Ok(()) = fs::write("words.txt", words) else {
+    let Ok(()) = fs::write(path, words) else {
         println!("failed to remove the chosen word from words.txt");
         exit(0);
     };
